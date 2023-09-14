@@ -1,0 +1,48 @@
+import cv2
+import sys
+import easyocr
+import csv # import csv module
+
+# create a reader object with english language
+reader = easyocr.Reader(['en'])
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print('usage: python ocr_simple.py image.jpg')
+        sys.exit(1)
+
+    # get the image path from the command line argument
+    impath = "C://Users//aj941891//2image.jpg"
+
+
+    # reading an image in default mode
+    image = cv2.imread(impath)
+
+    # run easyocr on image and get the text and bounding boxes
+    result = reader.readtext(image)
+
+    # create a new csv file with 'w' mode
+    csvfile = open('ocr_result.csv', 'w', newline='')
+    # create a csv writer object
+    writer = csv.writer(csvfile)
+
+    # loop over the result
+    for (bbox, text, prob) in result:
+        # get the coordinates of the bounding box
+        (x1, y1), (x2, y2), (x3, y3), (x4, y4) = bbox
+
+        # draw a rectangle around the text
+        cv2.rectangle(image, (x1, y1), (x3, y3), (0, 255, 0), 2)
+
+        # put the text and the probability on the image
+        cv2.putText(image, f'{text} ({prob:.2f})', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+        # write the text and the probability to the csv file
+        writer.writerow([text, prob])
+
+    # close the csv file
+    csvfile.close()
+
+    # display the image and wait for a key press
+    cv2.imshow('OCR Result', image)
+    cv2.waitKey(0)
