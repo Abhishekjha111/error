@@ -1,0 +1,57 @@
+Certainly, you can integrate the image conversion to bytes into your existing code like this:
+
+```python
+import cv2
+import sys
+import easyocr
+import csv
+
+# Create a reader object with the English language
+reader = easyocr.Reader(['en'])
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print('usage: python ocr_simple.py image.jpg')
+        sys.exit(1)
+
+    # Get the image path from the command line argument
+    impath = "C://Users//aj941891//2image.jpg"
+
+    # Reading an image in default mode
+    image = cv2.imread(impath)
+
+    # Convert the OpenCV image to bytes
+    retval, buffer = cv2.imencode('.jpg', image)
+    image_bytes = buffer.tobytes()
+
+    # Run EasyOCR on the image and get the text and bounding boxes
+    result = reader.readtext(image_bytes)
+
+    # Create a new CSV file with 'w' mode
+    csvfile = open('ocr_result.csv', 'w', newline='')
+    # Create a CSV writer object
+    writer = csv.writer(csvfile)
+
+    # Loop over the result
+    for (bbox, text, prob) in result:
+        # Get the coordinates of the bounding box
+        (x1, y1), (x3, y3) = bbox[0], bbox[2]
+
+        # Draw a rectangle around the text
+        cv2.rectangle(image, (x1, y1), (x3, y3), (0, 255, 0), 2)
+
+        # Put the text and the probability on the image
+        cv2.putText(image, f'{text} ({prob:.2f})', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+        # Write the text and the probability to the CSV file
+        writer.writerow([text, prob])
+
+    # Close the CSV file
+    csvfile.close()
+
+    # Display the image and wait for a key press
+    cv2.imshow('OCR Result', image)
+    cv2.waitKey(0)
+```
+
+This code snippet adds the image conversion to bytes and then uses those bytes for OCR processing while keeping the rest of your code intact. Make sure to adjust the image file path as needed.
