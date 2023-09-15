@@ -1,0 +1,33 @@
+
+**Requirement:**
+- The requirement is to develop a Python script for Optical Character Recognition (OCR) that can be used with minimal effort.
+- The script should accept an image file path as input, perform OCR on it, and provide output in both a visual format (bounding boxes around recognized text) and a structured format (CSV file containing recognized text and probabilities).
+
+**Solution Proposed:**
+- The solution leverages Python and popular libraries to streamline OCR tasks.
+- Key libraries used include:
+  - `cv2` (OpenCV): Used for image processing.
+  - `sys`: Provides access to system-related functions.
+  - `easyocr`: Simplifies OCR operations.
+  - `csv`: Facilitates CSV file operations.
+- The script is designed for simplicity and efficiency, requiring minimal setup.
+- It initializes an OCR reader for English language text recognition using the `easyocr` library.
+- Users can specify the image file path as a command-line argument.
+- The script reads the image, converts it to bytes, and conducts OCR analysis.
+- OCR results are processed, extracting text, bounding boxes, and confidence probabilities.
+- Bounding boxes are overlaid onto the original image to visually highlight recognized text regions.
+- The recognized text and corresponding probabilities are systematically saved in a CSV file.
+- The script also offers a real-time view of the image with overlays of bounding boxes and recognized text.
+
+**System and Package Requirements:**
+- A Python 3.x environment.
+- The following Python libraries must be installed:
+  - `cv2` (OpenCV): Install using `pip install opencv-python`.
+  - `easyocr`: Install via `pip install easyocr`.
+
+**Output Format:**
+- The script generates the following output:
+  - A 'ocr_result.csv' file containing recognized text and their associated probabilities.
+  - A visual window displaying the original image with superimposed bounding boxes around identified text regions, along with the recognized text and probabilities.
+
+Note: Ensure you adjust the `impath` variable in the code to specify the actual image file you want to process. This solution simplifies OCR tasks while providing both visual and structured output for ease of use.
